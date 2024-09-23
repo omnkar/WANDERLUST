@@ -1,7 +1,13 @@
 body
 {
-   
     font-family: "Plus Jakarta Sans",sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container
+{
+    flex: 1;
 }
 /*navbar */
 .navbar
@@ -87,3 +93,25 @@ body
     opacity: 0.2;
     background-color: white;
 }
+
+/*styling new listing */
+
+.add-btn,.edit-btn ,.edit1-btn
+{
+   
+    background-color:  #fe424d !important;
+    border: none !important;
+}
+
+/*styling edit page */
+.edit1-btn
+{
+    margin-top:10rem !important;
+    margin-left: 15rem !important;
+    width: 5% !important;
+}
+.btns
+{
+    display: flex;
+}
+/*styling show page */

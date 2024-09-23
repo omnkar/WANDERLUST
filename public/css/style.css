@@ -115,3 +115,12 @@ body
     display: flex;
 }
 /*styling show page */
+.show-img
+{
+    height: 40vh;
+}
+.show-card
+{
+    padding-left: 0;
+    padding-right: 0;
+}

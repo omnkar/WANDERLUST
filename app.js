@@ -9,6 +9,7 @@ const wrapAsync=require("./utils/wrapAsync.js");
 const ExpressError=require("./utils/ExpressError.js");
 const {listingSchema}=require("./schema.js");
 const Review=require("./models/review.js");
+const {reviewSchema}=require("./schema.js");
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
@@ -51,6 +52,18 @@ const validateListing=(req,res,next)=>
 
 }
 
+const validateReview=(req,res,next)=>
+{
+    let {error}=reviewSchema.validate(req.body);
+    if(error)
+    {
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
+    }
+    else{
+        next();
+    }
+}
 //index route
 app.get("/listings",wrapAsync(async (req,res)=>
 {
@@ -106,7 +119,7 @@ app.delete("/listings/:id/delete",wrapAsync(async (req,res)=>
     res.redirect("/listings");
 }))
 //reviews route
-app.post("/listings/:id/reviews",async(req,res)=>
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>
     {
        let listing= await Listing.findById(req.params.id);
        let newReview=new Review(req.body.review);
@@ -116,7 +129,7 @@ app.post("/listings/:id/reviews",async(req,res)=>
        await listing.save();
     
       res.redirect(`/listings/${listing._id}`);
-    })
+    }))
 //handling wrong route error
 app.all("*",(req,res,next)=>
 {

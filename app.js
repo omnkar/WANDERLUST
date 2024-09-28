@@ -119,17 +119,18 @@ app.delete("/listings/:id/delete",wrapAsync(async (req,res)=>
     res.redirect("/listings");
 }))
 //reviews route
-app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>
+app.post("/listings/:id/reviews",wrapAsync(async(req,res)=>
     {
        let listing= await Listing.findById(req.params.id);
        let newReview=new Review(req.body.review);
-    
+
        listing.reviews.push(newReview);
        await newReview.save();
        await listing.save();
-    
-      res.redirect(`/listings/${listing._id}`);
-    }))
+        console.log(newReview);
+
+    res.redirect(`/listings/${req.params.id}`);
+}))
 //handling wrong route error
 app.all("*",(req,res,next)=>
 {

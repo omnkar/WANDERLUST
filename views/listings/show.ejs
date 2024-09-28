@@ -1,10 +1,10 @@
 
 <% layout("/layouts/boilerplate") %>
 <div class="row mt-3">
-    <div class="col-8 offset-2 mt-3 show-card">
+    <div class="col-8 offset-2 mt-3 ">
         <h1><%= listing.title %></h1>
     </div>
-    <div class="card col-6 offset-2">
+    <div class="card col-6 offset-2 show-card listing-card">
         <img src="<%= listing.image %>" class="card-img-top show-img" alt="Listing_image">
         <div class="card-body">
             <p class="card-text">
@@ -41,8 +41,24 @@
         <button class="btn btn-outline-dark">Submit</button>
     </form>
     <hr>
-    <h4>All Reviews</h4>
-    <p><%= listing.reviews %></p>
+    <p>All Reviews</p>
+    <div class="row">
+        <% for( review of listing.reviews ) { %>
+        
+            <div class="card col-5 ms-3 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">jan doe</h5>
+                    <p class="card-text"><%= review.comment %></p>
+                    <p class="card-text"><%= review.rating %> stars</p>
+                </div>
+                <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" class="mb-3" method="post">
+                    <button class="btn btn-sm btn-dark">Delete</button>
+                </form>
+            </div>
+            
+         <% } %>
+    </div>
+   
 </div>
 <script src="/js/script.js"></script>
 

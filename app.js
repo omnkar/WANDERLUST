@@ -81,7 +81,7 @@ app.get("/listings/new",(req,res)=>
 app.get("/listings/:id",wrapAsync(async(req,res)=>
 {
     let{id}=req.params;
-    const listing=await Listing.findById(id);
+    const listing=await Listing.findById(id).populate("reviews");
     res.render("listings/show.ejs",{listing});
 
 }))
@@ -119,7 +119,7 @@ app.delete("/listings/:id/delete",wrapAsync(async (req,res)=>
     res.redirect("/listings");
 }))
 //reviews route
-app.post("/listings/:id/reviews",wrapAsync(async(req,res)=>
+app.post("/listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>
     {
        let listing= await Listing.findById(req.params.id);
        let newReview=new Review(req.body.review);
@@ -127,9 +127,15 @@ app.post("/listings/:id/reviews",wrapAsync(async(req,res)=>
        listing.reviews.push(newReview);
        await newReview.save();
        await listing.save();
-        console.log(newReview);
-
     res.redirect(`/listings/${req.params.id}`);
+}))
+//delete review route
+app.delete("/listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>
+{
+    let{id,reviewId}=req.params;
+    await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
 }))
 //handling wrong route error
 app.all("*",(req,res,next)=>

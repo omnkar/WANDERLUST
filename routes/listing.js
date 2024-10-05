@@ -47,6 +47,7 @@ router.get("/",wrapAsync(async (req,res)=>
             
             const newlist=new Listing(req.body.listing);
             await newlist.save();
+            req.flash("success","New Listing Created");
             res.redirect("/listings");
     })
     );

@@ -16,3 +16,35 @@
       }, false)
     })
   })()
+  const titleField=document.getElementById('title');
+  const priceField=document.getElementById("price");
+  const countryField=document.getElementById('country')
+  const locField=document.getElementById('loc')
+  titleField.addEventListener('keypress',(event)=>
+    {
+      if(event.key>='0' && event.key<='9')
+      {
+        event.preventDefault();
+      }
+    })
+  countryField.addEventListener('keypress',(event)=>
+    {
+      if(event.key>='0' && event.key<='9')
+      {
+        event.preventDefault();
+      }
+    })
+  locField.addEventListener('keypress',(event)=>
+    {
+      if(event.key>='0' && event.key<='9')
+      {
+        event.preventDefault();
+      }
+    })
+  priceField.addEventListener('keypress',(event)=>
+    {
+      if((event.key>='a' && event.key<='z') ||(event.key>='A' && event.key<='Z') || event.key.length()>5)
+      {
+        event.preventDefault();
+      }
+    })

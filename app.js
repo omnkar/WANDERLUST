@@ -56,6 +56,7 @@ app.use(session(sessionOption));
 app.use((req,res,next)=>
 {
     res.locals.success=req.flash("success");
+    res.locals.failure=req.flash("error");
     next();
 
 })

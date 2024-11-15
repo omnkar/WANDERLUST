@@ -8,6 +8,10 @@ const ExpressError=require("./utils/ExpressError.js");
 const session=require("express-session");
 const flash=require("connect-flash");
 
+const passport=require("passport");
+const LocalStrategy=require("passport-local");
+const User=require("./models/user.js");
+
 const listings=require("./routes/listing.js");
 const reviews=require("./routes/reviews.js");
 const cookie = require("express-session/session/cookie.js");
@@ -50,8 +54,14 @@ app.get("/",(req,res)=>
 {
     res.send("hei i am rooot");
 });
-app.use(flash());
 app.use(session(sessionOption));
+app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>
 {
@@ -61,6 +71,15 @@ app.use((req,res,next)=>
 
 })
 
+app.get("/demouser",async(req,res)=>
+{
+    let fakeUser=new User({
+        email:"student@gmail.com",
+        username:"delta-student"
+    });
+    let registerUser=await User.register(fakeUser,"helloWorld");
+    res.send(registerUser);
+})
 //middleware for restructuring of listings
 app.use("/listings",listings);
 
